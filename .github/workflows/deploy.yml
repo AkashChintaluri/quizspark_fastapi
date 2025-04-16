@@ -7,6 +7,7 @@ on:
 env:
   AWS_REGION: ap-south-1
   S3_BUCKET: quizspark-frontend
+  BACKEND_URL: https://your-backend-domain.com  # Update this with your actual backend URL
 
 jobs:
   deploy-frontend:
@@ -23,7 +24,10 @@ jobs:
         run: npm ci
         
       - name: Build frontend
-        run: npm run build
+        run: |
+          # Create .env.production file with backend URL
+          echo "VITE_API_URL=${{ env.BACKEND_URL }}" > .env.production
+          npm run build
         
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -53,10 +57,9 @@ jobs:
           
       - name: Install dependencies
         run: |
-          cd fastapi_backend
-          pip install -r requirements.txt
+          pip install -r fastapi_backend/requirements.txt
+          pip install -e .
           
       - name: Verify FastAPI server
         run: |
-          cd fastapi_backend
           python -c "from fastapi_backend.main import app; print('FastAPI server imports successfully')" 
