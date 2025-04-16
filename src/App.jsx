@@ -12,22 +12,22 @@ import StudentDashboard from './pages/StudentDashboard';
 import TeacherDashboard from './pages/TeacherDashboard';
 import Header from './components/Header';
 
-const Layout = ({ children }) => {
-    const location = useLocation();
-    const hideHeaderPaths = ['/student-dashboard', '/teacher-dashboard'];
-    const shouldShowHeader = !hideHeaderPaths.some(path => location.pathname.startsWith(path));
-
-    return (
-        <div className="layout-container">
-            {shouldShowHeader && <Header />}
-            <main className="main-content">
-                {children}
-            </main>
-        </div>
-    );
-};
-
 function App() {
+    const Layout = ({ children }) => {
+        const location = useLocation();
+        const hideHeaderPaths = ['/student-dashboard', '/teacher-dashboard'];
+        const shouldShowHeader = !hideHeaderPaths.some(path => location.pathname.startsWith(path));
+
+        return (
+            <div className="layout-container">
+                {shouldShowHeader && <Header />}
+                <main className="main-content">
+                    {children}
+                </main>
+            </div>
+        );
+    };
+
     return (
         <ChakraProvider>
             <AuthProvider>
