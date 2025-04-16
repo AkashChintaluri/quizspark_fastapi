@@ -6,7 +6,7 @@ on:
 
 env:
   AWS_REGION: ap-south-1
-  S3_BUCKET: quizspar-frontend
+  S3_BUCKET: quizspark-frontend
 
 jobs:
   deploy-frontend:
@@ -32,6 +32,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
           
+      - name: List S3 buckets
+        run: aws s3 ls
+        
+      - name: Check bucket exists
+        run: aws s3 ls s3://${{ env.S3_BUCKET }} || echo "Bucket does not exist or no access"
+        
       - name: Deploy to S3
         run: aws s3 sync dist/ s3://${{ env.S3_BUCKET }} --delete --acl public-read
 
@@ -53,4 +59,4 @@ jobs:
       - name: Verify FastAPI server
         run: |
           cd fastapi_backend
-          python -c "from main import app; print('FastAPI server imports successfully')" 
+          python -c "from fastapi_backend.main import app; print('FastAPI server imports successfully')" 

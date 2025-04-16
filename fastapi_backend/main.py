@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
-from . import models
-from .database import engine
-from .routes import router
+from fastapi_backend import models
+from fastapi_backend.database import engine
+from fastapi_backend.routes import router
 
 # Load environment variables
 load_dotenv()
